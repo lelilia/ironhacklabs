@@ -43,3 +43,9 @@ table {
     transform: rotate(360deg);
   }
 }
+
+.namefilter {
+  max-width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import users from "./users"
 import './App.css'
 import linkedinLogo from './linkedin.png'
@@ -8,8 +8,8 @@ const Link = ({ link }) => {
     return null
   }
   return (
-    <a href = {link} target = "_blank">
-      <img src={linkedinLogo} alt = "linkedin" width = "15"/>
+    <a href={link} target="_blank" rel="noopener noreferrer">
+      <img src={linkedinLogo} alt="linkedin" width="15" />
     </a>
   )
 }
@@ -29,14 +29,14 @@ const Table = ({ users }) => {
       </thead>
       <tbody>
         {users.map(user =>
-          <tr key = {user.firstName + user.lastName}>
+          <tr key={user.firstName + user.lastName}>
             <td>
               {user.firstName}
             </td>
             <td>{user.lastName}</td>
             <td>{user.campus}</td>
             <td>{user.role}</td>
-            <td><Link link = {user.linkedin}/></td>
+            <td><Link link={user.linkedin} /></td>
           </tr>
         )}
       </tbody>
@@ -46,12 +46,25 @@ const Table = ({ users }) => {
 }
 
 const App = () => {
-  console.log(users)
+  const [nameFilter, setNameFilter] = useState('')
+
+  const handleFilterChange = (event) => setNameFilter(event.target.value)
+
+  const usersToShow = nameFilter
+    ? users.filter(user => 
+        user.firstName.toLowerCase().includes(nameFilter.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(nameFilter.toLowerCase())
+      )
+    : users
+
   return (
     <div>
 
       <h1>IronBook</h1>
-      <Table users={users} />
+      <div>
+        <input className = "namefilter" value={nameFilter} onChange={handleFilterChange} />
+      </div>
+      <Table users={usersToShow} />
     </div>
 
   )
